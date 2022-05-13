@@ -20,26 +20,26 @@ impl Game {
             board: Game::board_from_file(src)
         }
     }
-    
+
     pub fn board_from_file(src: &str) -> [[Option<PieceInfo>; 8]; 8] {
         let mut board = [[None; 8]; 8];
-        
+
         let mut i = 0;
         let mut j = 0;
-        
+
         for c in src.chars() {
             let lower = c
                 .to_lowercase()
                 .to_string();
-             
+
             match lower.as_str() {
                 "\n" => { 
                     i += 1; 
                     j = 0;
                 },
-                
+
                 " "  => j += 1,
-                
+
                 "p" => board[i][j] = Some(PieceInfo::new(Piece::Pn, c.is_uppercase())),
                 "r" => board[i][j] = Some(PieceInfo::new(Piece::Rk, c.is_uppercase())),
                 "n" => board[i][j] = Some(PieceInfo::new(Piece::Kt, c.is_uppercase())),
@@ -70,23 +70,23 @@ impl Game {
 }
 
 impl fmt::Display for Game {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {   
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {    
         let mut on_white = true;
         let mut row: u8 = 8;
         let mut col: u8 = 8;
 
         let mut buf = String::new();
         buf.reserve(200);
-        
-        for r in self.board.iter() {
-            buf += &format!("{} ", row);
+
+        for r in self.board {
+            buf += &row.to_string();
             row -= 1;
 
             for c in r {
                 let square =
                     match c {
-                        Some(p) => format!(" {} ", p.to_string()),
-                        None => format!("   ")
+                        Some(p) => format!("{} ", p.to_string()),
+                        None => format!("  ")
                     };
 
                 let square = 
@@ -97,7 +97,7 @@ impl fmt::Display for Game {
                     };
 
                 buf += &square.to_string();
-                    
+
                 on_white = !on_white; 
             }
 
@@ -106,10 +106,10 @@ impl fmt::Display for Game {
             on_white = !on_white;
         }
 
-        buf.push_str("   ");
+        buf.push(' ');
 
-        for _ in self.board.iter() {
-            buf += &format!("{}  ", ('i' as u8 - col) as char);
+        for _ in self.board {
+            buf += &format!("{} ", ('i' as u8 - col) as char);
             col -= 1;
         }
 
