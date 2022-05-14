@@ -79,21 +79,21 @@ impl fmt::Display for Game {
         buf.reserve(200);
 
         for r in self.board {
-            buf += &row.to_string();
+            buf += &format!("{} ", row.to_string());
             row -= 1;
 
             for c in r {
                 let square =
                     match c {
-                        Some(p) => format!("{} ", p.to_string()),
-                        None => format!("  ")
+                        Some(p) => format!(" {} ", p.to_string()),
+                        None => format!("   ")
                     };
 
                 let square = 
                     if on_white {
-                        square.on_black().white()
+                        square.on_bright_black()
                     } else {
-                        square.on_white().black()
+                        square.on_bright_white()
                     };
 
                 buf += &square.to_string();
@@ -106,10 +106,10 @@ impl fmt::Display for Game {
             on_white = !on_white;
         }
 
-        buf.push(' ');
+        buf.push_str("   ");
 
         for _ in self.board {
-            buf += &format!("{} ", ('i' as u8 - col) as char);
+            buf += &format!("{}  ", ('i' as u8 - col) as char);
             col -= 1;
         }
 

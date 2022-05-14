@@ -1,11 +1,17 @@
+use colored::Colorize;
+
+
+const PIECE_UNICODE: u32 = 9812;
+const BLACK_OFFSET: u32  = 6;
+
 #[derive(Clone, Copy)]
 pub enum Piece {
-    Pn,
-    Rk,
-    Kt,
-    Bp,
-    Qn,
-    Kg
+    Kg = 0,
+    Qn = 1,
+    Rk = 2,
+    Bp = 3,
+    Kt = 4,
+    Pn = 5
 }
 
 #[derive(Clone, Copy)]
@@ -27,13 +33,20 @@ impl PieceInfo {
 
 impl ToString for PieceInfo {
     fn to_string(&self) -> String {
-        let piece = self.piece.to_string();
+        let unicode = 
+            if self.white {
+                char::from_u32(self.piece.unicode())
+                    .unwrap()
+                    .to_string()
+                    .bright_cyan()
+            } else {
+                char::from_u32(self.piece.unicode() + BLACK_OFFSET)
+                    .unwrap()
+                    .to_string()
+                    .black()
+            };
 
-        if self.white {
-            piece.to_uppercase()
-        } else {
-            piece.to_lowercase()
-        }
+        unicode.to_string()
     }
 }
 
@@ -48,19 +61,8 @@ impl Piece {
             Piece::Kg => usize::max_value()
         }
     }
-}
 
-impl ToString for Piece {
-    fn to_string(&self) -> String {
-        let s = match self {
-            Piece::Pn => "p",
-            Piece::Rk => "r",
-            Piece::Bp => "b",
-            Piece::Kt => "n",
-            Piece::Qn => "q",
-            Piece::Kg => "k"
-        };
-
-        String::from(s)
+    pub fn unicode(self) -> u32 {
+        PIECE_UNICODE + self as u32
     }
 }

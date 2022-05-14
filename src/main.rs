@@ -4,8 +4,10 @@ pub mod piece;
 use crate::game::Game;
 
 fn main() -> std::io::Result<()> {
-    let src = std::fs::read_to_string("res/board.txt")?;
+    let src = std::fs::read_to_string("C:/repo/Rust/chess-engine/src/res/board.txt")?;
     let mut game = Game::new(&src);
 
-    game.play()
+    println!("{}", game);
+
+    Ok(())
 }

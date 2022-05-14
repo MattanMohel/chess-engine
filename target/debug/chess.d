@@ -1,1 +1,1 @@
-D:\repo\Rust\chess\target\debug\chess.exe: D:\repo\Rust\chess\src\game.rs D:\repo\Rust\chess\src\main.rs D:\repo\Rust\chess\src\piece.rs
+C:\repo\Rust\chess-engine\target\debug\chess.exe: C:\repo\Rust\chess-engine\src\game.rs C:\repo\Rust\chess-engine\src\main.rs C:\repo\Rust\chess-engine\src\piece.rs
