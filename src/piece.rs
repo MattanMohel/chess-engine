@@ -1,5 +1,5 @@
 use colored::Colorize;
-
+use crate::game::Game;
 
 const PIECE_UNICODE: u32 = 9812;
 const BLACK_OFFSET: u32  = 6;
@@ -64,5 +64,26 @@ impl Piece {
 
     pub fn unicode(self) -> u32 {
         PIECE_UNICODE + self as u32
+    }
+}
+
+pub type Pos = (usize, usize);
+
+#[derive(Clone, Copy)]
+pub struct Move {
+    pub beg: Pos,
+    pub end: Pos,
+    pub moved: PieceInfo,
+    pub captured: Option<PieceInfo>
+}
+
+impl Move {
+    pub fn new(beg: Pos, end: Pos, moved: PieceInfo, captured: Option<PieceInfo>) -> Self {
+        Self { 
+            beg: beg,
+            end: end, 
+            moved: moved, 
+            captured: captured 
+        }
     }
 }

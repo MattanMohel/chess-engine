@@ -7,11 +7,13 @@ use colored::Colorize;
 
 use crate::piece::{
     Piece,
-    PieceInfo
+    PieceInfo,
+    Move,
+    Pos
 };
 
 pub struct Game {
-    pub board: [[Option<PieceInfo>; 8]; 8],
+    board: [[Option<PieceInfo>; 8]; 8],
 }
 
 impl Game {
@@ -51,6 +53,38 @@ impl Game {
         }
 
         board
+    }
+
+    /// returns if board position is occupied
+    /// by another piece
+    pub fn is_occupied(&self, pos: Pos) -> bool {
+        self.board[pos.0][pos.1].is_none()
+    }
+
+    /// returns if board position is threatened 
+    /// by another piece
+    pub fn is_threatened(&self, pos: Pos, white: bool) -> bool {
+        todo!()
+    }
+
+    /// returns if piece move was legal
+    /// 
+    /// TODO: King Safety
+    pub fn is_legal_move(&self, piece: PieceInfo, mv: Move) -> bool {
+        let captured = self.piece_at(mv.end);
+        
+        let white = 
+            match captured {
+                Some(piece) => piece.white,
+                None => false 
+            };
+
+        piece.white != white || captured.is_none()
+    }
+
+    /// returns the piece at pos
+    pub fn piece_at(&self, pos: Pos) -> Option<PieceInfo> {
+        self.board[pos.0][pos.1]
     }
 
     pub fn play(&mut self) -> io::Result<()> {
